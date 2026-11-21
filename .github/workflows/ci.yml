@@ -1,1 +1,32 @@
+name: USM Event Hub CI Check
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  verify-repository:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run TDD Unit Assertions
+        run: node tests/ticketRegistration.test.js
+
+      - name: Check Report Draft Files Exist
+        run: |
+          test -f docs/task1-spem-raci.md
+          test -f docs/task2-requirements.md
+          test -f docs/task3-vmodel.md
+          test -f docs/task4-lean-xp.md
+          test -f docs/task5-governance.md
+          echo "All 5 task report files verified!"
 
